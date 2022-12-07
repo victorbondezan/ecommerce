@@ -1,0 +1,228 @@
+/*---------------------------------------Versão tutorial de video---------------------------------------*/
+
+
+
+//React
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import Navbar from './styles/Navbar';
+
+//Paginas
+//import Home from './pages/home';
+//import Home from './pages/home';
+//import Home from './pages/home';
+
+function Routier() {
+    return (
+        <ul>
+            <li><Link to="/">Home</Link></li>
+            <li><Link to="/empresa">Empresa</Link></li>
+            <li><Link to="/contato">Contato</Link></li>
+        </ul>
+
+        <Router>
+            <Navbar />           
+            <Switch>
+                {/**
+                 * exact serve pro programa entender que só irá acessar o componente "/" quando clicar expecificamente na tag home..
+                 * fora o erro corrigido com expecific o router é responsavel por "gettar(chamar para a função)" o caminho de cada página          
+                 *  e os links locais responsaveis por "settar(set-atribuir valor)" a cada link..
+                 * Switch é responsavel por mudar cada componente.
+                 */}
+                <Router exact path="/"> 
+                    <Home />
+                </Router>
+                <Router path="/empresa">
+                    <Empresa />
+                </Router>
+                <Router path="/contato">
+                    <Contato />
+                </Router>
+            </Switch>
+        </Router>
+    )
+}
+
+
+
+/*------------------------------------------tutorial da Framework------------------------------------------*/
+/*
+
+    Um upgrade do React Router 5.1
+
+      Será mais fácil mudar para o React Router v6 se você atualizar para a v5.1 primeiro. Na v5.1, 
+    lançamos um aprimoramento no tratamento dos elementos <Route children> que ajudarão a suavizar 
+    a transição para a v6. Em vez de usar props <Route component> e <Route render>, apenas use o 
+    elemento regular <Route children> em todos os lugares e use hooks para acessar o estado interno 
+    do roteador.
+
+*/
+
+
+// v4 and v5 before 5.1
+function User({ id }) {  // ... }
+
+function App() {
+  return (
+    <Switch>
+      <Route exact path="/" component={Home} />
+      <Route path="/about" component={About} />
+      <Route
+        path="/users/:id"
+        render={({ match }) => (
+          <User id={match.params.id} />
+        )}
+      />
+    </Switch>
+  );
+}
+
+// v5.1 preferred style
+function User() {
+  let { id } = useParams();
+  // ...
+}
+
+function App() {
+  return (
+    <Switch>
+      <Route exact path="/">
+        <Home />
+      </Route>
+      <Route path="/about">
+        <About />
+      </Route>
+      {/* Can also use a named `children` prop */}
+      <Route path="/users/:id" children={<User />} />
+    </Switch>
+  );
+}
+
+
+/*------------------------------------------tutorial da Framework 2------------------------------------------*/
+
+
+// Trocar isso:
+<Switch>
+  <Redirect from="about" to="about-us" />
+</Switch>
+
+// Por isso:
+<Switch>
+  <Route path="about" render={() => <Redirect to="about-us" />} />
+</Switch>
+
+
+/*------------------------------------------tutorial da Framework 3------------------------------------------*/
+
+
+/*
+    Sobre Routes e Liks
+
+    Na v5, você tinha que ser muito explícito sobre como desejava aninhar suas rotas e links. Em ambos os casos, 
+    se você quisesse rotas e links aninhados, você teria que construir os props <Route path> e <Link to> 
+    a partir das propriedades match.url e match.path da rota parent(pai). Além disso, se você quisesse aninhar rotas, 
+    teria que colocá-las no componente da rota(filha).
+
+*/
+
+
+// Esse é um esquema de React Router v5(versão) no arquivo app
+import { BrowserRouter, Switch, Route, Link, useRouteMatch } from "react-router-dom";
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Switch>
+        <Route exact path="/">
+          <Home />
+        </Route>
+        <Route path="/users">
+          <Users />
+        </Route>
+      </Switch>
+    </BrowserRouter>
+  );
+}
+
+function Users() {
+/*
+      Na v5(versão), rotas aninhadas são renderizadas pelo componente children(filho), então
+    você tem elementos <Switch> em todo o seu aplicativo para UI aninhada.
+    Você constrói rotas e links aninhados usando match.url e match.path.
+    
+    Acho que essa é a função Navbar do caso.. useRouteMatch.
+
+    
+
+*/
+  let match = useRouteMatch();
+
+  return (
+    <div>
+      <nav>
+        <Link to={`${match.url}/me`}>My Profile</Link>
+      </nav>
+
+      <Switch>
+        <Route path={`${match.path}/me`}>
+          <OwnUserProfile />
+        </Route>
+        <Route path={`${match.path}/:id`}>
+          <UserProfile />
+        </Route>
+      </Switch>
+    </div>
+  );
+}
+
+// O literaverso usa a versão mais atual do react router dom ^6.3.0
+// A Van usa "react-router-dom": "^6.0.2"
+
+
+/*------------------------------------------tutorial da Framework 3------------------------------------------*/
+
+//Exemplo em 5.3.0
+import React from "react";
+import { BrowserRouter as Router, Switch, Route, Link} from "react-router-dom";
+
+
+export default function BasicExample() {
+  return (
+    <Router>
+      <div>
+        <ul>
+          <li>
+            <Link to="/">Home</Link>
+          </li>
+          <li>
+            <Link to="/about">About</Link>
+          </li>
+          <li>
+            <Link to="/dashboard">Dashboard</Link>
+          </li>
+        </ul>
+
+        <hr /> //sei lá isso aqui
+
+        {/*
+            Um <Switch> examina todos os seus filhos <Route>
+          elementos e renderiza o primeiro cujo caminho
+          corresponde ao URL atual. Use um <Switch> a qualquer momento
+          você tem várias rotas, mas deseja apenas uma
+          deles para renderizar de uma vez
+        */}
+        <Switch>
+          <Route exact path="/">
+            <Home />
+          </Route>
+          <Route path="/about">
+            <About />
+          </Route>
+          <Route path="/dashboard">
+            <Dashboard />
+          </Route>
+        </Switch>
+      </div>
+    </Router>
+  );
+}

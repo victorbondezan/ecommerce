@@ -1,0 +1,41 @@
+import { Link } from "react-router-dom"
+//Teoricamente o CSS parte daqui
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import Moletons from '../paginas/blusas/conteudo';
+
+//a function app ta dividida em 2.. Navbar e App(no momento Routier) 
+function Navbar() {
+    return(
+        <Route path="./paginas/blusas/conteudo" component={Moletons}></Route>
+    )
+/*     <ul>
+        <li><Link to="/">Home</Link></li>
+        <li><Link to="/empresa">Empresa</Link></li>
+        <li><Link to="/contato">Contato</Link></li>
+    </ul> */
+}
+
+/**
+        como ultilizar className com CSS.. (não sei se consigo ultilizar o mesmo className pra fazer outras
+    mudanças mas da pra tentar):
+     styled-component:
+        .list {
+            display: flex;
+            list-style: none;
+        }
+        .item {
+            margin-right: 1em;
+        }
+
+
+
+     tsx:
+        import { Link } from "react-router-dom"
+        import styles from "./Navbar.module.css."
+
+        <ul className={styles.list}>
+            <li className={styles.item}><Link to="/">Home</Link></li> 
+
+*/
+
+export default Navbar
